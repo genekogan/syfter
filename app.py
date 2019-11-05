@@ -3,6 +3,10 @@
 # https://stackabuse.com/deploying-a-flask-application-to-heroku/
 from flask import Flask, request, jsonify
 
+from flask import render_template
+
+app = Flask(__name__)
+
 import threading
 import random
 
@@ -16,10 +20,7 @@ from torchvision.utils import save_image
 from torch.autograd import Variable
 import syft as sy
 
-app = Flask(__name__)
-
-is_running = False
-
+is_running = True
 model = None
 
 
@@ -54,6 +55,7 @@ class VAE(nn.Module):
 
 
 def run_me(x, s):
+    
     global model    
     print("going to thread here...", x, s)
     global is_running
@@ -182,8 +184,10 @@ def post_something():
 # A welcome message to test our server
 @app.route('/')
 def index():
-    return "<h1>Welcome to our server !!</h1>"
+    message = "Hello, ssss"
+    return render_template('index.html', message=message)
 
 if __name__ == '__main__':
+    print("let's go")
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000)
+    app.run(threaded=True, port=5000, debug=True, ssl_context='adhoc')
