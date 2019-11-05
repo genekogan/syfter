@@ -1,5 +1,6 @@
 # app.py
 
+# https://stackabuse.com/deploying-a-flask-application-to-heroku/
 from flask import Flask, request, jsonify
 
 import threading
