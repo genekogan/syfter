@@ -3,7 +3,7 @@
 from flask import Flask, request, jsonify
 
 import os
-# import torch
+import torch
 # import torch.nn as nn
 # import torch.nn.functional as F
 # import torchvision
@@ -19,6 +19,9 @@ def respond():
     # Retrieve the name from url parameter
     # name = request.args.get("name", None)
 
+    print('does torch exist?')
+    print(torch)
+    print('maybe')
     # # For debugging
     # print(f"got name {name}")
 
