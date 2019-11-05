@@ -10,20 +10,21 @@ import torch
 # from torchvision import transforms
 # from torchvision.utils import save_image
 # from torch.autograd import Variable
-# import syft as sy
+import syft as sy
 
 app = Flask(__name__)
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
     # Retrieve the name from url parameter
-    # name = request.args.get("name", None)
+    name = request.args.get("name", None)
 
     print('does torch exist?')
     print(torch)
+    print(sy)
     print('maybe')
     # # For debugging
-    # print(f"got name {name}")
+    print(f"got name {name}")
 
 
     # hook = sy.TorchHook(torch)
