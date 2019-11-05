@@ -41,7 +41,7 @@ function setup() {
   eyesStraight = false;
 
   setupPosenet();
-  setupWS();
+  //setupWS();
 }
 
 function setupPosenet() {
@@ -192,7 +192,7 @@ function runCrop() {
   if (success1) {
     var success2 = makeObfuscatedImage();    
     if (success2){
-      sendWS();
+      //sendWS();
     }
   }
 }

@@ -190,4 +190,4 @@ def index():
 if __name__ == '__main__':
     print("let's go")
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000, debug=True, ssl_context='adhoc')
+    app.run(threaded=True, port=5000, debug=True)
