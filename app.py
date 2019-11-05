@@ -2,6 +2,9 @@
 
 from flask import Flask, request, jsonify
 
+import threading
+import random
+
 import os
 import torch
 import torch.nn as nn
@@ -14,8 +17,20 @@ import syft as sy
 
 app = Flask(__name__)
 
+is_running = False
 
-def run_me():
+
+
+def run_me(x, s):
+    print("going to thread here...", x, s)
+    global is_running
+    
+    if is_running:
+        print("===== already is running ", is_running)
+        return
+
+    is_running = True
+
     # bob & alice
     hook = sy.TorchHook(torch)
     bob = sy.VirtualWorker(hook, id="bob")
@@ -32,6 +47,10 @@ def run_me():
     num_epochs = 2
     batch_size = 64
     learning_rate = 1e-3
+
+    if not os.path.exists('./data'):
+        os.mkdir('./data')
+
 
     # data loader
     federated_train_loader = sy.FederatedDataLoader( # <-- this is now a FederatedDataLoader 
@@ -73,7 +92,10 @@ def run_me():
 
         
     model = VAE().to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+    optimizers = {}
+    for worker in [bob, alice]:
+        optimizers[worker] = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     for epoch in range(num_epochs):
         for batch_idx, (data, target) in enumerate(federated_train_loader): 
@@ -88,9 +110,9 @@ def run_me():
             
             # backward
             loss = reconst_loss + kl_div
-            optimizer.zero_grad()
+            optimizers[data.location].zero_grad()
             loss.backward()
-            optimizer.step()
+            optimizers[data.location].step()
 
             model.get()
 
@@ -98,6 +120,7 @@ def run_me():
                 print ("Epoch[{}/{}], Step [{}/{}], Reconst Loss: {:.4f}, KL Div: {:.4f}" 
                     .format(epoch+1, num_epochs, batch_idx+1, len(federated_train_loader), reconst_loss.get(), kl_div.get()))
         
+    is_running = False
     print("finish")
 
 
@@ -117,7 +140,7 @@ def respond():
     # # For debugging
     print(f"got name {name}")
 
-    run_me()
+    threading.Thread(target=run_me, args=("hello world", random.random())).start()
 
     # hook = sy.TorchHook(torch)
     # bob = sy.VirtualWorker(hook, id="bob")
