@@ -3,30 +3,30 @@
 from flask import Flask, request, jsonify
 
 import os
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torchvision
-from torchvision import transforms
-from torchvision.utils import save_image
-from torch.autograd import Variable
-import syft as sy
+# import torch
+# import torch.nn as nn
+# import torch.nn.functional as F
+# import torchvision
+# from torchvision import transforms
+# from torchvision.utils import save_image
+# from torch.autograd import Variable
+# import syft as sy
 
 app = Flask(__name__)
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
     # Retrieve the name from url parameter
-    name = request.args.get("name", None)
+    # name = request.args.get("name", None)
 
-    # For debugging
-    print(f"got name {name}")
+    # # For debugging
+    # print(f"got name {name}")
 
 
-    hook = sy.TorchHook(torch)
-    bob = sy.VirtualWorker(hook, id="bob")
-    print("does bob exist?")
-    print(bob)
+    # hook = sy.TorchHook(torch)
+    # bob = sy.VirtualWorker(hook, id="bob")
+    # print("does bob exist?")
+    # print(bob)
 
     response = {}
 

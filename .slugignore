@@ -1,0 +1,8 @@
+*.psd
+*.pdf
+/test
+/spec
+*.ipynb
+.git
+*/.git
+.git/*
